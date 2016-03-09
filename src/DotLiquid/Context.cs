@@ -439,7 +439,10 @@ namespace DotLiquid
 			Dictionary<string, object> tempAssigns = new Dictionary<string, object>(Template.NamingConvention.StringComparer);
 
 			Hash lastScope = Scopes.Last();
-			foreach (string k in lastScope.Keys)
+			// fix keys not thread safe
+			// keep a temporary copy of Keys
+			// releated to https://github.com/dotliquid/dotliquid/issues/154
+			foreach (string k in lastScope.Keys.ToList())
 				foreach (Hash env in Environments)
 					if (env.ContainsKey(k))
 					{
