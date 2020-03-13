@@ -131,7 +131,15 @@ namespace DotLiquid
 			if (string.IsNullOrEmpty(op))
 			{
 				object result = context[left];
-				return (result != null && (!(result is bool) || (bool) result));
+
+				if (result == null)
+					return false;
+
+				if (result is bool)
+					return (bool)result;
+
+				// empty strings are also falsey (same logic as javascript)
+				return !String.IsNullOrEmpty(result.ToString());
 			}
 
 			object leftObject = context[left];
