@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -108,6 +109,8 @@ namespace DotLiquid
 
             if (output is IValueTypeConvertible)
                 output = ((IValueTypeConvertible) output).ConvertToValueType();
+
+			
 
 			return output;
 		}

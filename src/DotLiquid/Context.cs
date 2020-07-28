@@ -353,6 +353,10 @@ namespace DotLiquid
 			if ((obj is IDictionary && ((IDictionary) obj).Contains(part)))
 				return true;
 
+			// Modfified: check for JObjects if the object is deserialized from JSON
+			if (obj is Newtonsoft.Json.Linq.JObject && ((Newtonsoft.Json.Linq.JObject)obj).ContainsKey((string)part))
+				return true;
+
 			if ((obj is IList) && (part is int))
 				return true;
 
@@ -370,6 +374,9 @@ namespace DotLiquid
 			object value;
 			if (obj is IDictionary)
 				value = ((IDictionary) obj)[key];
+			// Modified for JSON objects
+			else if (obj is Newtonsoft.Json.Linq.JObject)
+				value = ((Newtonsoft.Json.Linq.JObject)obj)[key];
 			else if (obj is IList)
 				value = ((IList) obj)[(int) key];
 			else if (TypeUtility.IsAnonymousType(obj.GetType()))
@@ -392,6 +399,10 @@ namespace DotLiquid
 					throw new NotSupportedException();
 				return newValue;
 			}
+
+			// Modified - JSON value just return the inner value
+			if (value is Newtonsoft.Json.Linq.JValue)
+				value = ((Newtonsoft.Json.Linq.JValue)value).Value;
 
 			return value;
 		}
