@@ -196,7 +196,7 @@ namespace DotLiquid
         public virtual object ConvertToValueType()
         {
             if(_value == null)
-                return null;
+                return GetObject();
 
             return _value(_proxiedObject);
         }
